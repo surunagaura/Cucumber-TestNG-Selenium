@@ -1,0 +1,5 @@
+reporting:
+  enabled: true
+  server:
+    hostname: <server-hostname-goes-here>
+    access-token: <access-token-goes-here>
