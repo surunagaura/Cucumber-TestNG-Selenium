@@ -21,8 +21,22 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.14.3</version>
-			<!-- <scope>compile</scope> -->
+			<version>7.3.0</version>
+			 <scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>1.10.18</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.zebrunner</groupId>
+			<artifactId>agent-testng</artifactId>
+			<version>1.4.0</version>
+			<scope>test</scope>
 		</dependency>
 
 
@@ -70,6 +84,32 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.2</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>com.zebrunner</groupId>
+							<artifactId>agent-core</artifactId>
+							<version>RELEASE</version>
+							<outputDirectory>${project.build.directory}/agent</outputDirectory>
+							<destFileName>zebrunner-core-agent.jar</destFileName>
+						</artifactItem>
+					</artifactItems>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.1</version>
 				<configuration>
@@ -91,6 +131,7 @@
 					<suiteXmlFiles>
 						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
+					<argLine>-javaagent:${project.build.directory}/agent/zebrunner-core-agent.jar</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
